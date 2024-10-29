@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Probleme kann man niemals mit derselben Denkweise lösen, durch die sie entstanden sind.</Text>
+      <Text>-- Albert Einstein</Text>
+      <Button title="Nächstes Zitat" />
       <StatusBar style="auto" />
     </View>
   );
