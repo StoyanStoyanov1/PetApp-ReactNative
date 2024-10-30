@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import Qoute from './components/Qoute';
 
 const data = [
   {text: "Man sieht nur mit dem Herzen gut. Das Wesentliche ist für die Augen unsichtbar.", 
@@ -21,6 +22,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>{qoute.text}</Text>
       <Text>-- {qoute.author}</Text>
+      <Qoute></Qoute>
       <Button title="Nächstes Zitat" 
         onPress={() => setIndex((index + 1 ) % data.length)}/>
       <StatusBar style="auto" />
