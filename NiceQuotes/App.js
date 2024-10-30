@@ -20,9 +20,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{qoute.text}</Text>
-      <Text>-- {qoute.author}</Text>
-      <Qoute></Qoute>
+      <Qoute text={qoute.text} author={qoute.author}></Qoute>
       <Button title="Nächstes Zitat" 
         onPress={() => setIndex((index + 1 ) % data.length)}/>
       <StatusBar style="auto" />
