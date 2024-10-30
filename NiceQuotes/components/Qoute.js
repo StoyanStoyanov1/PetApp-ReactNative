@@ -1,21 +1,30 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Qoute(props) {
     return (
-    <>
-        <Text style={styles.text}>{props.text}</Text>
-        <Text style={styles.author}>-- {props.author}</Text>
-    </>
+    <View style={styles.container}>
+        <Text style={[styles.text, styles.fontColor]}>{props.text}</Text>
+        <Text style={[styles.author, styles.fontColor]}>-- {props.author}</Text>
+    </View>
 )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 10
+    },
     text: { 
         fontSize: 36, 
-        fontStyle: 'italic'
-    } ,
+        fontStyle: 'italic',
+        marginBottom: 10,
+    },
+    fontColor: {
+        color: '#20b2aa',
+        textAlign: 'center',
+    },
     author: { 
         fontSize: 24, 
-        fontStyle: 'italic'
+        fontStyle: 'italic',
+        textAlign: 'right',
     },
 });

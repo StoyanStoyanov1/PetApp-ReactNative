@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Pressable, View, Text } from 'react-native';
 import Qoute from './components/Qoute';
 
 const data = [
@@ -21,8 +21,12 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Qoute text={qoute.text} author={qoute.author}></Qoute>
-      <Button title="Nächstes Zitat" 
-        onPress={() => setIndex((index + 1 ) % data.length)}/>
+      <Pressable
+        onPress={() => setIndex((index + 1 ) % data.length)}
+        style={styles.button}
+        > 
+        <Text style={styles.textButton}>Nächstes Zitat</Text> 
+      </Pressable>
       <StatusBar style="auto" />
     </View>
   );
@@ -34,5 +38,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  button: {
+    position: 'absolute', 
+    bottom: 60,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    borderColor: 'darkred',
+    backgroundColor: 'darkred',
+  },
+  textButton: {
+    color: '#FFF',
+    fontSize: 18,
   },
 });
