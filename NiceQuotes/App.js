@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Pressable, View, Text } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { StyleSheet, Pressable, View, Text } from 'react-native';
 import Qoute from './components/Qoute';
+import NewQoute from './components/NewQoute';
+
 
 const data = [
   {text: "Man sieht nur mit dem Herzen gut. Das Wesentliche ist für die Augen unsichtbar.", 
@@ -15,11 +18,16 @@ const data = [
 export default function App() {
 
   const [index, setIndex] = useState(0);
+  const [showNewDialog, setSchowNewDialog ] = useState(false);
 
   const qoute = data[index];
 
   return (
     <View style={styles.container}>
+      <Pressable style={styles.createButton} onPress={() => setSchowNewDialog(!showNewDialog)}>
+      <MaterialIcons name="add-circle" size={24} color="green" />
+      </Pressable>
+        <NewQoute visible={showNewDialog} onCancel={() => setSchowNewDialog(false)} />
       <Qoute text={qoute.text} author={qoute.author}></Qoute>
       <Pressable
         onPress={() => setIndex((index + 1 ) % data.length)}
@@ -45,11 +53,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
-    borderColor: 'darkred',
-    backgroundColor: 'darkred',
+    borderColor: 'darkgreen',
+    backgroundColor: 'darkgreen',
   },
   textButton: {
     color: '#FFF',
     fontSize: 18,
+  },
+  createButton: {
+    position: 'absolute',
+    top: 60,
+    right: 30,
+  },
+  createButtonText: {
+
   },
 });
