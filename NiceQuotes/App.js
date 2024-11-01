@@ -22,6 +22,12 @@ export default function App() {
 
   const qoute = data[index];
 
+  function addQouteToList(name, content) {
+    data.push({text: content, author: name});
+    setSchowNewDialog(false);
+    setIndex(data.length - 1);
+  }
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.createButton} onPress={() => setSchowNewDialog(!showNewDialog)}>
@@ -30,7 +36,7 @@ export default function App() {
         <NewQoute 
         visible={showNewDialog} 
         onCancel={() => setSchowNewDialog(false)} 
-        onSave={(name, content) => data.push({text: content, author: name}) }
+        onSave={addQouteToList}
         />
       <Qoute text={qoute.text} author={qoute.author}></Qoute>
       <Pressable

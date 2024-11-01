@@ -42,7 +42,6 @@ export default function NewQoute({
                 onSave(name, content);
                 setContent('');
                 setName('');
-                onCancel();
             }}
             />
             <Pressable onPress={onCancel}>
