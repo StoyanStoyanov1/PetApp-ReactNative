@@ -9,6 +9,7 @@ import {
     Platform
 } from "react-native";
 import BigButton from './BigButton';
+import IconButton from './IconButtons';
 
 export default function NewQoute({
     visible, 
@@ -32,6 +33,11 @@ export default function NewQoute({
         animationType="slide"
         >
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+            <IconButton 
+                onPress={onCancel}
+                icon="arrow-back"
+                style={styles.back}
+            />
             <TextInput 
             placeholder="Inhalt" 
             multiline={true} 
@@ -75,5 +81,10 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 20,
         textAlignVertical: 'top',
+    },
+    back: {
+        position: 'absolute',
+        top: 50,
+        left:20
     }
 })

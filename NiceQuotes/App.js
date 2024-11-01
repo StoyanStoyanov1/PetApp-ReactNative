@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { StyleSheet, Pressable, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Qoute from './components/Qoute';
 import NewQoute from './components/NewQoute';
 import BigButton from './components/BigButton';
+import IconButton from './components/IconButtons';
 
 
 const data = [
@@ -31,9 +31,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.createButton} onPress={() => setSchowNewDialog(!showNewDialog)}>
-      <MaterialIcons name="add-circle" size={24} color="green" />
-      </Pressable>
+        <IconButton 
+        onPress={() => setSchowNewDialog(!showNewDialog)} 
+        style={styles.createButton} 
+        icon="add-circle"  
+        />
         <NewQoute 
         visible={showNewDialog} 
         onCancel={() => setSchowNewDialog(false)} 
@@ -59,11 +61,6 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute', 
     bottom: 60,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 10,
-    borderColor: 'darkgreen',
-    backgroundColor: 'darkgreen',
   },
   textButton: {
     color: '#FFF',
@@ -73,8 +70,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 60,
     right: 30,
-  },
-  createButtonText: {
-
   },
 });
