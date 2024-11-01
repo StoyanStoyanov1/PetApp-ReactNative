@@ -17,11 +17,23 @@ export default function NewQoute({
     onSave,
 }) {
     
-    const [name, setName] = useState(null);
-    const [content, setContent] = useState(null);
+    const [name, setName] = useState('');
+    const [content, setContent] = useState('');
 
     const onSubmit = () => {
+        content.trim();
+        name.trim();
+        if (!content || !name) {
+            return alert('Inhalt und Name des Zitats dürfen nicht leer sein.')
+        }
+
         onSave(name, content);
+        setContent('');
+        setName('');
+    }
+
+    function cancelEditing() {
+        onCancel();
         setContent('');
         setName('');
     }
@@ -34,7 +46,7 @@ export default function NewQoute({
         >
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <IconButton 
-                onPress={onCancel}
+                onPress={cancelEditing}
                 icon="arrow-back"
                 style={styles.back}
             />
@@ -43,23 +55,18 @@ export default function NewQoute({
             multiline={true} 
             style={[styles.input, { height: 150}]}
             onChangeText={setContent}
-            value={content}
             />
             <TextInput 
             placeholder="Name" 
             style={styles.input}
             returnKeyType="done"
             onChangeText={setName}
-            value={name}
             onSubmitEditing={onSubmit}
             />
              <BigButton
                 title='Speichern'
                 onPress={onSubmit}
             />
-            <Pressable onPress={onCancel}>
-                <Text style={{fontSize: 24, padding: 10}}>Abbrechen</Text>
-            </Pressable>
     
             </KeyboardAvoidingView>
         </Modal>

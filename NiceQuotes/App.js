@@ -25,8 +25,9 @@ export default function App() {
 
   function addQouteToList(name, content) {
     data.push({text: content, author: name});
-    setSchowNewDialog(false);
     setIndex(data.length - 1);
+
+    setSchowNewDialog(false)
   }
 
   return (
