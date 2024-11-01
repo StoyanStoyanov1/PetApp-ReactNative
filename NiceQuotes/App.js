@@ -4,6 +4,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { StyleSheet, Pressable, View, Text } from 'react-native';
 import Qoute from './components/Qoute';
 import NewQoute from './components/NewQoute';
+import BigButton from './components/BigButton';
 
 
 const data = [
@@ -39,12 +40,11 @@ export default function App() {
         onSave={addQouteToList}
         />
       <Qoute text={qoute.text} author={qoute.author}></Qoute>
-      <Pressable
-        onPress={() => setIndex((index + 1 ) % data.length)}
-        style={styles.button}
-        > 
-        <Text style={styles.textButton}>Nächstes Zitat</Text> 
-      </Pressable>
+      <BigButton 
+      title='Nächstes Zitat' 
+      onPress={() => setIndex((index + 1 ) % data.length)}
+      style={styles.button}
+      />
       <StatusBar style="auto" />
     </View>
   );

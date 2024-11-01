@@ -8,6 +8,7 @@ import {
     KeyboardAvoidingView, 
     Platform
 } from "react-native";
+import BigButton from './BigButton';
 
 export default function NewQoute({
     visible, 
@@ -17,6 +18,12 @@ export default function NewQoute({
     
     const [name, setName] = useState(null);
     const [content, setContent] = useState(null);
+
+    const onSubmit = () => {
+        onSave(name, content);
+        setContent('');
+        setName('');
+    }
 
     return (
         <Modal 
@@ -38,15 +45,16 @@ export default function NewQoute({
             returnKeyType="done"
             onChangeText={setName}
             value={name}
-            onSubmitEditing={() => {
-                onSave(name, content);
-                setContent('');
-                setName('');
-            }}
+            onSubmitEditing={onSubmit}
+            />
+             <BigButton
+                title='Speichern'
+                onPress={onSubmit}
             />
             <Pressable onPress={onCancel}>
                 <Text style={{fontSize: 24, padding: 10}}>Abbrechen</Text>
             </Pressable>
+    
             </KeyboardAvoidingView>
         </Modal>
     )
