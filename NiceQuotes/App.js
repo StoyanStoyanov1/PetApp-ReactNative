@@ -27,7 +27,11 @@ export default function App() {
       <Pressable style={styles.createButton} onPress={() => setSchowNewDialog(!showNewDialog)}>
       <MaterialIcons name="add-circle" size={24} color="green" />
       </Pressable>
-        <NewQoute visible={showNewDialog} onCancel={() => setSchowNewDialog(false)} />
+        <NewQoute 
+        visible={showNewDialog} 
+        onCancel={() => setSchowNewDialog(false)} 
+        onSave={(name, content) => data.push({text: content, author: name}) }
+        />
       <Qoute text={qoute.text} author={qoute.author}></Qoute>
       <Pressable
         onPress={() => setIndex((index + 1 ) % data.length)}
@@ -43,7 +47,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
