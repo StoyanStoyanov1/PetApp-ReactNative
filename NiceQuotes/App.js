@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Qoute from './components/Qoute';
 import NewQoute from './components/NewQoute';
 import BigButton from './components/BigButton';
@@ -27,9 +29,19 @@ export default function App() {
     data.push({text: content, author: name});
     setIndex(data.length - 1);
 
-    setSchowNewDialog(false)
+    setSchowNewDialog(false);
   }
 
+  function saveQuotes(newQuotes) {
+    AsyncStorage.setItem('QUOTES', JSON.stringify(newQuotes));
+  }
+
+  async function loadQoutes() {
+    const qoutesFromDB = await AsyncStorage.getItem('QUOTES');
+    console.log(qoutesFromDB);
+  }
+
+  loadQoutes();
   return (
     <View style={styles.container}>
         <IconButton 
