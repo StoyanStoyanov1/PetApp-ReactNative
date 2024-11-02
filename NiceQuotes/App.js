@@ -47,8 +47,21 @@ export default function App() {
     }
   }
 
+  function removeQuoteFromList() {
+    const newQuotes = [...quotes];
+    newQuotes.splice(index, 1);
+    setQuotes(newQuotes);
+    setIndex(0);
+    saveQuotes(newQuotes);
+  }
+
   return (
     <View style={styles.container}>
+       <IconButton 
+        onPress={removeQuoteFromList}  
+        style={styles.delete} 
+        icon="delete"  
+      />
       <IconButton 
         onPress={() => setShowNewDialog(!showNewDialog)}  
         style={styles.createButton} 
@@ -88,5 +101,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 60,
     right: 30,
+  },
+  delete: {
+    position: 'absolute',
+    top: 60,
+    left: 30
   },
 });
