@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,57 +8,62 @@ import NewQoute from './components/NewQoute';
 import BigButton from './components/BigButton';
 import IconButton from './components/IconButtons';
 
-
 const data = [
-  {text: "Man sieht nur mit dem Herzen gut. Das Wesentliche ist für die Augen unsichtbar.", 
-    author: "Antoine de Saint-Exupéry" },
-{ text: "Phantasie ist wichtiger als Wissen, denn Wissen ist begrenzt.", 
-  author: "Albert Einstein" },
-{ text: "Wer kämpft, kann verlieren. Wer nicht kämpft, hat schon verloren.", 
-  author: "Bertolt Brecht" },
+  { text: "Man sieht nur mit dem Herzen gut. Das Wesentliche ist für die Augen unsichtbar.", author: "Antoine de Saint-Exupéry" },
+  { text: "Phantasie ist wichtiger als Wissen, denn Wissen ist begrenzt.", author: "Albert Einstein" },
+  { text: "Wer kämpft, kann verlieren. Wer nicht kämpft, hat schon verloren.", author: "Bertolt Brecht" },
 ];
 
 export default function App() {
-
   const [index, setIndex] = useState(0);
-  const [showNewDialog, setSchowNewDialog ] = useState(false);
+  const [showNewDialog, setShowNewDialog] = useState(false);
+  const [quotes, setQuotes] = useState(data);
 
-  const qoute = data[index];
+  useEffect(() => {
+    loadQuotes();
+  }, []);
 
-  function addQouteToList(name, content) {
-    data.push({text: content, author: name});
-    setIndex(data.length - 1);
+  const quote = quotes[index];
 
-    setSchowNewDialog(false);
+  function addQuoteToList(name, content) {
+    const newQuotes = [...quotes, { text: content, author: name }];  
+    setQuotes(newQuotes);
+    setIndex(newQuotes.length - 1);
+    setShowNewDialog(false); 
+    saveQuotes(newQuotes);
   }
 
   function saveQuotes(newQuotes) {
     AsyncStorage.setItem('QUOTES', JSON.stringify(newQuotes));
   }
 
-  async function loadQoutes() {
-    const qoutesFromDB = await AsyncStorage.getItem('QUOTES');
-    console.log(qoutesFromDB);
+  async function loadQuotes() {
+    let quotesFromDB = await AsyncStorage.getItem('QUOTES');
+
+    if (quotesFromDB) {
+      quotesFromDB = JSON.parse(quotesFromDB);
+      console.log('nach JSON.parse: ' + quotesFromDB.length);
+      setQuotes(quotesFromDB);
+    }
   }
 
-  loadQoutes();
   return (
     <View style={styles.container}>
-        <IconButton 
-        onPress={() => setSchowNewDialog(!showNewDialog)} 
+      <IconButton 
+        onPress={() => setShowNewDialog(!showNewDialog)}  
         style={styles.createButton} 
         icon="add-circle"  
-        />
-        <NewQoute 
+      />
+      <NewQoute 
         visible={showNewDialog} 
-        onCancel={() => setSchowNewDialog(false)} 
-        onSave={addQouteToList}
-        />
-      <Qoute text={qoute.text} author={qoute.author}></Qoute>
+        onCancel={() => setShowNewDialog(false)} 
+        onSave={addQuoteToList}
+      />
+      <Qoute text={quote.text} author={quote.author}></Qoute>
       <BigButton 
-      title='Nächstes Zitat' 
-      onPress={() => setIndex((index + 1 ) % data.length)}
-      style={styles.button}
+        title="Nächstes Zitat" 
+        onPress={() => setIndex((index + 1) % quotes.length)} 
+        style={styles.button}
       />
       <StatusBar style="auto" />
     </View>
