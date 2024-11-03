@@ -3,18 +3,28 @@ import { StyleSheet, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.box1}/>
-      <View style={styles.box2}/>
-      <View style={styles.box3}/>
+      <View style={[styles.box, {backgroundColor: 'cyan'}]}/>
+      <View style={[styles.box, {backgroundColor: 'magenta'}]}/>
+      <View style={[styles.box, {backgroundColor: 'yellow'}]}/>
+      <View style={[styles.box, {backgroundColor: 'blue'}]}/>
+      <View style={[styles.box, {backgroundColor: 'orange'}]}/>
+      <View style={[styles.box, {backgroundColor: 'green'}]}/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    alignContent: 'center',
+    gap: 10
   },
-  box1: {backgroundColor: 'cyan', width: 150, height: 150},
-  box2: {backgroundColor: 'magenta', width: 350, height: 100},
-  box3: {backgroundColor: 'yellow', width: 100, height: 250},
+  box: {
+    width: 100,
+    height: 100,
+  }
 });
