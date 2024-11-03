@@ -1,29 +1,24 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Alert, Text} from 'react-native';
-import * as SQLite from 'expo-sqlite';
+import {ActivityIndicator, StyleSheet, View, Alert, Text} from 'react-native';
+import Firebase from './Firebase';
 
 import Qoute from './components/Qoute';
 import NewQoute from './components/NewQoute';
 import BigButton from './components/BigButton';
 import IconButton from './components/IconButtons';
 
-const database = SQLite.openDatabaseSync('qoutes.db');
-
 export default function App() {
   const [index, setIndex] = useState(0);
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [quotes, setQuotes] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
-    initDB();
+    Firebase.init();
     loadQuotes();
   }, []);
 
-  function initDB () {
-    database.runSync(
-      'CREATE TABLE IF NOT EXISTS allquotes (id INTEGER PRIMARY KEY NOT NULL, text TEXT, author TEXT)');
-  }
 
   function addQuoteToList(text, author) {
     setShowNewDialog(false);
@@ -35,18 +30,15 @@ export default function App() {
   }
 
  async function saveQuotes(text, author, newQuotes) {
-    const result = await database.runAsync(
-    'INSERT INTO allquotes (text,author) VALUES (?,?)',
-    text,
-    author
-    );
-    newQuotes[newQuotes.length - 1].id = result.lastInsertRowId;
-    setQuotes(newQuotes);
+    const id = await Firebase.saveQuote(text, author);
+    newQuotes[newQuotes.length - 1].id = id;
+    setQuotes(newQuotes)
   }
 
   async function loadQuotes() {
-    const rows = await database.getAllAsync('SELECT * FROM allquotes');
-    setQuotes(rows);
+    const quotesFromDB = await Firebase.getQuotes();
+    setQuotes(quotesFromDB);
+    setIsloading(false);
   }
 
   function removeQuoteFromList() {
@@ -55,7 +47,7 @@ export default function App() {
     newQuotes.splice(index, 1);
     setIndex(0);
     setQuotes(newQuotes);
-    database.runAsync('DELETE FROM allquotes WHERE id=?', id)
+    Firebase.removeQuote(id);
   }
 
   function deleteQoute () {
@@ -71,6 +63,14 @@ export default function App() {
 
   const quote = quotes[index] ? quotes[index] : {};
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size='large' color='darkgreen'/>
+      </View>
+    )
+  }
+  
   return (
     <View style={styles.container}>
        {quotes.length > 0 && <IconButton 
