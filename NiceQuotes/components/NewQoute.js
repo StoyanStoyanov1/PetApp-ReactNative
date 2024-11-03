@@ -27,7 +27,7 @@ export default function NewQoute({
             return alert('Inhalt und Name des Zitats dürfen nicht leer sein.')
         }
 
-        onSave(name, content);
+        onSave(content, name);
         setContent('');
         setName('');
     }

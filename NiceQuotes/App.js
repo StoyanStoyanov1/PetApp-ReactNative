@@ -1,50 +1,61 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert, Text} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SQLite from 'expo-sqlite';
 
 import Qoute from './components/Qoute';
 import NewQoute from './components/NewQoute';
 import BigButton from './components/BigButton';
 import IconButton from './components/IconButtons';
 
+const database = SQLite.openDatabaseSync('qoutes.db');
+
 export default function App() {
   const [index, setIndex] = useState(0);
   const [showNewDialog, setShowNewDialog] = useState(false);
-  const [quotes, setQuotes] = useState({});
+  const [quotes, setQuotes] = useState([]);
 
   useEffect(() => {
+    initDB();
     loadQuotes();
   }, []);
 
-
-  function addQuoteToList(name, content) {
-    const newQuotes = [...quotes, { text: content, author: name }];  
-    setQuotes(newQuotes);
-    setIndex(newQuotes.length - 1);
-    setShowNewDialog(false); 
-    saveQuotes(newQuotes);
+  function initDB () {
+    database.runSync(
+      'CREATE TABLE IF NOT EXISTS allquotes (id INTEGER PRIMARY KEY NOT NULL, text TEXT, author TEXT)');
   }
 
-  function saveQuotes(newQuotes) {
-    AsyncStorage.setItem('QUOTES', JSON.stringify(newQuotes));
+  function addQuoteToList(text, author) {
+    setShowNewDialog(false);
+
+    const newQuotes = [...quotes, { text, author }];  
+    setQuotes(newQuotes);
+    setIndex(newQuotes.length - 1);
+    saveQuotes(text, author, newQuotes);
+  }
+
+ async function saveQuotes(text, author, newQuotes) {
+    const result = await database.runAsync(
+    'INSERT INTO allquotes (text,author) VALUES (?,?)',
+    text,
+    author
+    );
+    newQuotes[newQuotes.length - 1].id = result.lastInsertRowId;
+    setQuotes(newQuotes);
   }
 
   async function loadQuotes() {
-    let quotesFromDB = await AsyncStorage.getItem('QUOTES');
-
-    if (quotesFromDB) {
-      quotesFromDB = JSON.parse(quotesFromDB);
-      setQuotes(quotesFromDB);
-    }
+    const rows = await database.getAllAsync('SELECT * FROM allquotes');
+    setQuotes(rows);
   }
 
   function removeQuoteFromList() {
     const newQuotes = [...quotes];
+    const id = quotes[index].id;
     newQuotes.splice(index, 1);
     setIndex(0);
     setQuotes(newQuotes);
-    saveQuotes(newQuotes);
+    database.runAsync('DELETE FROM allquotes WHERE id=?', id)
   }
 
   function deleteQoute () {
@@ -77,7 +88,7 @@ export default function App() {
         onCancel={() => setShowNewDialog(false)} 
         onSave={addQuoteToList}
       />
-      {quotes.length && <Qoute text={quote.text} author={quote.author}> </Qoute> 
+      {quotes.length > 0 && <Qoute text={quote.text} author={quote.author}> </Qoute> 
       || <Text style={styles.noQuotes}>Keine Zitate</Text>
       }
       <BigButton 
