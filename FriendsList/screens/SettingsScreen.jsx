@@ -1,9 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { SectionList, StyleSheet, Text, View } from 'react-native';
 
 export default function SettingScreen() {
     return (
       <View style={styles.container}>
-        <Text>Einstellungen</Text>
+        <SectionList 
+            sections={[
+                {title: 'Version', 
+                data: [
+                    {name: '1.0'},
+                ]},
+                {title: 'Impressum', 
+                data: [
+                    {name: 'Firma XYG'},
+                    {name: '(c) 2023'},
+                ]},
+            ]}
+            renderItem={({item}) => <Text>{item.name}</Text>}
+            renderSectionHeader={({section}) => 
+            <Text style={styles.section}>{section.title}</Text>}
+        />
       </View>
     );
 }
@@ -14,6 +29,14 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      paddingTop: 50,
     },
+    section: {
+        backgroundColor: 'whitesmoke',
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'lightgrey',
+        fontSize: 18,
+        padding: 5,
+    }
 });
   

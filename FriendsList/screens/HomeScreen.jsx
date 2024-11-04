@@ -15,6 +15,7 @@ export default function HomeScreen({navigation}) {
                 navigation.navigate('Friend', {name: item.name})}}/>
         }}
         keyExtractor={(item) => item.name}
+        ItemSeparatorComponent={<View style={styles.listSeparator}/>}
         />
       </View>
     );
@@ -28,5 +29,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       padding: 50,
     },
+    listSeparator: {
+        height: StyleSheet.hairlineWidth, 
+        backgroundColor: 'lightsalmon',
+    }
 });
   
