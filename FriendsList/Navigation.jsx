@@ -24,7 +24,11 @@ function HomeStack() {
             <Stack.Screen 
                 name='Friend' 
                 component={FriendsScreen} 
-                options={({route}) => { return {title: route.params.name}}}
+                options={({route}) => {
+                  const {first, last} = route.params.friend
+                  return {
+                    title: `${first} ${last}`};
+                  }}
             />
         </Stack.Navigator>
     );

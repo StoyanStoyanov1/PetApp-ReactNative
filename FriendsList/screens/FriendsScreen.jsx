@@ -1,12 +1,27 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  Image, 
+  ScrollView,
+  useWindowDimensions
+  } 
+   from 'react-native';
 
 export default function FriendsScreen({navigation, route}) {
-  const { name } = route.params;
+  const {width} = useWindowDimensions();
+  const imageWidht = width * 0.8
+  const { friend } = route.params;
     return (
-      <View style={styles.container}>
-        <Text>{name}</Text>
-        <Button title="Gehe zurück" onPress={() => navigation.goBack()}/>
-      </View>
+      <ScrollView 
+        contentContainerStyle={styles.container}  
+        style={styles.scrollView}>
+       
+         <Image 
+        style={{width: imageWidht, height: imageWidht}} 
+        source={require('../assets/icon.png')}
+    />
+        <Text>{friend.first} {friend.last}</Text>
+      </ScrollView>
     );
 }
 
@@ -17,5 +32,8 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+   scrollView: {
+    backgroundColor: '#FFF'
+   }
 });
   
