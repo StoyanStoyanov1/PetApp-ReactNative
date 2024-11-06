@@ -5,10 +5,10 @@ export default function FriendListItem ({friend, onPress}) {
     <Pressable onPress={onPress} style={styles.container}>
     <Image 
         style={styles.image} 
-        source={require('../assets/icon.png')}
+        source={{uri: friend.picture.thumbnail}}
     />
     <View style={styles.info}>
-        <Text style={styles.name} >{friend.first} {friend.last} </Text>
+        <Text style={styles.name} >{friend.name.first} {friend.name.last} </Text>
         <Text style={styles.email} >{friend.email}</Text>
     </View>
     </Pressable>)

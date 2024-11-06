@@ -18,9 +18,9 @@ export default function FriendsScreen({navigation, route}) {
        
          <Image 
         style={{width: imageWidht, height: imageWidht}} 
-        source={require('../assets/icon.png')}
+        source={{uri: friend.picture.large}}
     />
-        <Text>{friend.first} {friend.last}</Text>
+        <Text>{friend.name.first} {friend.name.last}</Text>
       </ScrollView>
     );
 }
